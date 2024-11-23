@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
 import RecipeCard from './components/RecipeCard';
-import RandomRecipe from './components/RandomRecipe'; // Import komponen baru
+import RandomRecipe from './components/RandomRecipe';
 import FavoriteList from './components/FavoriteList';
+import CustomGrid from './components/CustomGrid';
 
 const App = () => {
   const [recipes, setRecipes] = useState([]);
   const [randomRecipe, setRandomRecipe] = useState(null);
   const [showRandomRecipe, setShowRandomRecipe] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
-  const [favorites, setFavorites] = useState([]); // State untuk menyimpan favorit
+  const [favorites, setFavorites] = useState([]);
 
   // Fungsi untuk mencari resep
   const searchRecipes = async (query) => {
@@ -62,12 +63,12 @@ const App = () => {
       alert(`${recipe.label} sudah ada di daftar favorit!`);
     }
   };
-  
+
   const removeFromFavorites = (recipe) => {
     const updatedFavorites = favorites.filter(
       (fav) => fav.label !== recipe.label
     );
-    setFavorites(updatedFavorites); // Update state
+    setFavorites(updatedFavorites);
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Simpan ke localStorage
     alert(`${recipe.label} berhasil dihapus dari favorit!`);
   };
@@ -80,10 +81,8 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container" style={{ padding: '20px', minHeight: '100vh' }}>
-      <h1 style={{ textAlign: 'center', color: '#4a90e2' }}>
-        Apa jenis masakan favoritmu?
-      </h1>
+    <div className="container" style={{ padding: '20px', minHeight: '94vh' }}>
+      <CustomGrid onSearch={searchRecipes}/>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <SearchBar onSearch={searchRecipes} />
         <button
