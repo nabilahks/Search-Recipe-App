@@ -5,6 +5,8 @@ import RecipeCard from './components/RecipeCard';
 import RandomRecipe from './components/RandomRecipe';
 import FavoriteList from './components/FavoriteList';
 import CustomGrid from './components/CustomGrid';
+import Loading from './components/Loading';
+
 
 const App = () => {
   const [recipes, setRecipes] = useState([]);
@@ -12,9 +14,11 @@ const App = () => {
   const [showRandomRecipe, setShowRandomRecipe] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fungsi untuk mencari resep
   const searchRecipes = async (query) => {
+    setIsLoading(true); // Tampilkan loading
     const API_ID = process.env.REACT_APP_EDAMAM_API_ID;
     const API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
 
@@ -25,6 +29,8 @@ const App = () => {
       setRecipes(response.data.hits);
     } catch (error) {
       console.error('Error fetching the recipes:', error);
+    } finally {
+      setIsLoading(false); // Sembunyikan loading
     }
   };
 
@@ -81,7 +87,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container" style={{ padding: '20px', minHeight: '94vh' }}>
+    <div className="container" style={{ padding: '20px', minHeight: '94vh' }}> 
       <CustomGrid onSearch={searchRecipes}/>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <SearchBar onSearch={searchRecipes} />
@@ -118,22 +124,26 @@ const App = () => {
           {showFavorites ? 'Hide Favorites' : 'Show Favorites'}
         </button>
       </div>
-      {showRandomRecipe && randomRecipe && (
-        <RandomRecipe
-          recipe={randomRecipe}
-          onClose={() => setShowRandomRecipe(false)}
-        />
-      )}
-      <div className="recipe-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '20px' }}>
-        {recipes.map((recipe, index) => (
-          <RecipeCard
-            key={index}
-            recipe={recipe.recipe}
-            addToFavorites={() => addToFavorites(recipe.recipe)} // Panggil fungsi saat tombol diklik
+      {isLoading ? <Loading /> : 
+      <>
+        {showRandomRecipe && randomRecipe && (
+          <RandomRecipe
+            recipe={randomRecipe}
+            onClose={() => setShowRandomRecipe(false)}
           />
-        ))}
-      </div>
-      {showFavorites && <FavoriteList favorites={favorites} removeFromFavorites={removeFromFavorites}/>} {/* Kirim daftar favorit */}
+        )}
+        <div className="recipe-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '20px' }}>
+          {recipes.map((recipe, index) => (
+            <RecipeCard
+              key={index}
+              recipe={recipe.recipe}
+              addToFavorites={() => addToFavorites(recipe.recipe)}
+            />
+          ))}
+        </div>
+        {showFavorites && <FavoriteList favorites={favorites} removeFromFavorites={removeFromFavorites}/>} 
+      </>
+      }
     </div>
   );
 };
