@@ -1,6 +1,8 @@
 import React from 'react';
+import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const FavoriteList = ({ favorites }) => {
+const FavoriteList = ({ favorites, removeFromFavorites }) => {
   const itemsPerPage = 3; // Jumlah item per halaman
   const [currentPage, setCurrentPage] = React.useState(1);
 
@@ -35,6 +37,7 @@ const FavoriteList = ({ favorites }) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'space-between',
               border: '1px solid #e0e0e0',
               borderRadius: '10px',
               overflow: 'hidden',
@@ -49,15 +52,22 @@ const FavoriteList = ({ favorites }) => {
               alt={recipe.label}
               style={{ width: '100%', height: '200px', objectFit: 'cover' }}
             />
-            <div style={{ padding: '15px' }}>
+            <div style={{ padding: '15px', display: "flex", justifyContent:"space-between", flexDirection:"column" }}>
               <h3 style={{ fontSize: '1.2rem', margin: '10px 0' }}>{recipe.label}</h3>
-              <p style={{ color: '#666', fontSize: '0.9rem' }}>{recipe.ingredientLines.join(', ')}</p>
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>
+                {recipe.cuisineType.join(', ')} | {recipe.dishType}
+              </p>
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>
+                <FontAwesomeIcon icon={faUtensils} style={{ color: '#c8cfff' }} />{' '}
+                {recipe.calories.toFixed(2)} kcal
+              </p>
               <a
                 href={recipe.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   padding: '10px 20px',
+                  textAlign: 'center',
                   textDecoration: 'none',
                   backgroundColor: '#4a90e2',
                   borderRadius: '20px',
@@ -67,6 +77,22 @@ const FavoriteList = ({ favorites }) => {
               >
                 View Recipe
               </a>
+              <button
+                onClick={() => removeFromFavorites(recipe)}
+                style={{
+                  padding: '10px 20px',
+                  textDecoration: 'none',
+                  backgroundColor: '#d9534f',
+                  borderRadius: '20px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  marginTop: '10px',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Remove from Favorite
+              </button>
             </div>
           </div>
         ))}

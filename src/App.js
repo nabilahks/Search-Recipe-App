@@ -62,6 +62,15 @@ const App = () => {
       alert(`${recipe.label} sudah ada di daftar favorit!`);
     }
   };
+  
+  const removeFromFavorites = (recipe) => {
+    const updatedFavorites = favorites.filter(
+      (fav) => fav.label !== recipe.label
+    );
+    setFavorites(updatedFavorites); // Update state
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Simpan ke localStorage
+    alert(`${recipe.label} berhasil dihapus dari favorit!`);
+  };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
@@ -125,7 +134,7 @@ const App = () => {
           />
         ))}
       </div>
-      {showFavorites && <FavoriteList favorites={favorites} />} {/* Kirim daftar favorit */}
+      {showFavorites && <FavoriteList favorites={favorites} removeFromFavorites={removeFromFavorites}/>} {/* Kirim daftar favorit */}
     </div>
   );
 };
