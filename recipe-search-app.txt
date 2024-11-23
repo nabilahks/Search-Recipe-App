@@ -1,0 +1,16 @@
+- npx create-react-app recipe-search-app
+- cd recipe-search-app
+- npm install axios
+- create .env 
+REACT_APP_EDAMAM_API_ID=your_app_id
+REACT_APP_EDAMAM_API_KEY=your_api_key
+- Struktur
+src/
+├── components/
+│   ├── RecipeCard.js
+│   ├── SearchBar.js
+│   ├── FavoriteList.js
+├── App.js
+├── index.js
+├── styles.css
+
