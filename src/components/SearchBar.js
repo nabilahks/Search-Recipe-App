@@ -7,20 +7,36 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query); // Kirim query pencarian ke App.js
+    onSearch(query);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        style={{padding:'10px', borderRadius:'20px', border:'none', width:"300px", marginRight:"10px"}}
+        style={{
+          padding: '10px',
+          borderRadius: '20px',
+          border: '1px solid #ddd',
+          width: '300px',
+          marginRight: '10px',
+        }}
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Cari resep masakan kesukaan anda ..."
       />
-      <button type="submit" style={{padding:"10px", borderRadius:"20px", border:"none", backgroundColor:"#d7096c", color:"white", cursor:"pointer"}}>
-        <FontAwesomeIcon icon={faSearch}/>
+      <button
+        type="submit"
+        style={{
+          padding: '10px',
+          borderRadius: '20px',
+          border: 'none',
+          backgroundColor: '#4a90e2',
+          color: 'white',
+          cursor: 'pointer',
+        }}
+      >
+        <FontAwesomeIcon icon={faSearch} />
       </button>
     </form>
   );
