@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 const FavoriteList = () => {
   const [favorites, setFavorites] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3; // Jumlah item per halaman
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
@@ -10,13 +12,32 @@ const FavoriteList = () => {
     }
   }, []);
 
+  const totalPages = Math.ceil(favorites.length / itemsPerPage);
+
+  // Data untuk halaman saat ini
+  const currentItems = favorites.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  if (favorites.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '20px', color: '#666' }}>
+        <p>Anda belum memiliki resep favorit.</p>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ marginTop: '40px' }}>
-      <h2 style={{ color: '#4a90e2', fontSize: '1.8rem', marginBottom: '20px' }}>
+    <div style={{ marginTop: '40px', padding: '20px' }}>
+      <h2 style={{ color: '#4a90e2', fontSize: '1.8rem', textAlign: 'center', marginBottom: '20px' }}>
         Resep Favorit Anda
       </h2>
-      <div className="favorite-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {favorites.map((recipe, index) => (
+      <div
+        className="favorite-list"
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+      >
+        {currentItems.map((recipe, index) => (
           <div
             key={index}
             style={{
@@ -38,9 +59,7 @@ const FavoriteList = () => {
             />
             <div style={{ padding: '15px' }}>
               <h3 style={{ fontSize: '1.2rem', margin: '10px 0' }}>{recipe.label}</h3>
-              <p style={{ color: '#666', fontSize: '0.9rem' }}>
-                {recipe.ingredientLines.join(', ')}
-              </p>
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>{recipe.ingredientLines.join(', ')}</p>
               <a
                 href={recipe.url}
                 target="_blank"
@@ -58,6 +77,28 @@ const FavoriteList = () => {
               </a>
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            style={{
+              padding: '10px 15px',
+              margin: '5px',
+              borderRadius: '5px',
+              border: '1px solid #4a90e2',
+              backgroundColor: currentPage === index + 1 ? '#4a90e2' : 'white',
+              color: currentPage === index + 1 ? 'white' : '#4a90e2',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            {index + 1}
+          </button>
         ))}
       </div>
     </div>
