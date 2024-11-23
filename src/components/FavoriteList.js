@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const FavoriteList = () => {
-  const [favorites, setFavorites] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+const FavoriteList = ({ favorites }) => {
   const itemsPerPage = 3; // Jumlah item per halaman
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
-    if (storedFavorites) {
-      setFavorites(storedFavorites);
-    }
-  }, []);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   const totalPages = Math.ceil(favorites.length / itemsPerPage);
 

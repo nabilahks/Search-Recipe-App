@@ -8,8 +8,8 @@ import FavoriteList from './components/FavoriteList';
 const App = () => {
   const [recipes, setRecipes] = useState([]);
   const [randomRecipe, setRandomRecipe] = useState(null);
-  const [showRandomRecipe, setShowRandomRecipe] = useState(false); 
-  const [showFavorites, setShowFavorites] = useState(false); 
+  const [showRandomRecipe, setShowRandomRecipe] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
   const [favorites, setFavorites] = useState([]); // State untuk menyimpan favorit
 
   // Fungsi untuk mencari resep
@@ -49,13 +49,12 @@ const App = () => {
 
   // Fungsi untuk menambahkan ke daftar favorit
   const addToFavorites = (recipe) => {
-    const existingFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const isAlreadyFavorite = existingFavorites.some(
-      (fav) => fav.label === recipe.label // Cek jika resep sudah ada di favorit
+    const isAlreadyFavorite = favorites.some(
+      (fav) => fav.label === recipe.label
     );
 
     if (!isAlreadyFavorite) {
-      const updatedFavorites = [...existingFavorites, recipe];
+      const updatedFavorites = [...favorites, recipe];
       setFavorites(updatedFavorites); // Update state
       localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Simpan ke localStorage
       alert(`${recipe.label} berhasil ditambahkan ke favorit!`);
@@ -96,12 +95,12 @@ const App = () => {
           What to Cook Today?
         </button>
         <button
-          onClick={() => setShowFavorites(!showFavorites)} 
+          onClick={() => setShowFavorites(!showFavorites)}
           style={{
             padding: '10px 20px',
             borderRadius: '25px',
             border: 'none',
-            backgroundColor: showFavorites ? '#d9534f' : '#4a90e2', 
+            backgroundColor: showFavorites ? '#d9534f' : '#4a90e2',
             color: 'white',
             fontWeight: 'bold',
             cursor: 'pointer',
